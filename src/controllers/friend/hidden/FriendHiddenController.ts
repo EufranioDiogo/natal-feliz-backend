@@ -54,7 +54,7 @@ export const getUserHiddenFriendDesiresController = async (req: Request, res: Re
     status: 200,
     result: true,
     data: {
-      ...hiddenFriendDesires
+      hiddenFriendDesires
     }
   })
 }

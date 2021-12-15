@@ -1,9 +1,10 @@
+import { getUserByTokenHelper, createUserHelper } from './../../helpers/user/userHelper';
 import { UserType } from './../../utils/vars/user/userVars';
 import { generateJWT, verifyUserByToken } from './../../helpers/security/jwt/jwtHelper';
 import { encryptString } from './../../helpers/security/encryption/encryptHelper';
 import { responseGenerator } from './../../helpers/remote/response/responseGenerator';
 import { Request, Response } from 'express';
-import { userModel } from "../../models/user/userModel";
+import { UserModel } from "../../models/user/userModel";
 import { JwtPayload } from 'jsonwebtoken';
 
 
@@ -13,29 +14,34 @@ export const createUserController = async (req: Request, res: Response) => {
     password: req.body?.password,
   }
 
+  console.log(user)
+
   try {
-    const newPasswordGenerated: string = encryptString(user.password)
+    createUserHelper(user)
+      .then((creationResult: any) => {
+        const token = generateJWT({
+          _id: creationResult?._id,
+          ...user
+        })
 
-    const creationResult = await userModel.create({
-      ...user,
-      password: newPasswordGenerated
-    })
+        res.json(
+          responseGenerator(res, {
+            url: req.url,
+            status: 200,
+            result: true,
+            data: {
+              ...creationResult,
+              token
+            }
+          }))
+      })
+      .catch(err => {
+        console.log(err)
+      })
 
-    const token = generateJWT({
-      _id: creationResult?._id,
-      ...user
-    })
 
-    responseGenerator(res, {
-      url: req.url,
-      status: 200,
-      result: true,
-      data: {
-        ...creationResult,
-        token
-      }
-    })
   } catch (error) {
+    console.log(error)
     responseGenerator(res, {
       url: req.url,
       status: 500,
@@ -47,13 +53,13 @@ export const createUserController = async (req: Request, res: Response) => {
 }
 
 export const getUserData = async (req: Request, res: Response) => {
-  const user: string | JwtPayload | null | object = verifyUserByToken(req.body?.token)
+  const user = await getUserByTokenHelper(req.body?.token)
 
 
   if (user !== null) {
 
     try {
-      const userFounded = await userModel.findOne({ _id: user?._id || '' })
+      const userFounded = await UserModel.findOne({ _id: user?._id || '' })
 
       responseGenerator(res, {
         url: req.url,
@@ -78,7 +84,7 @@ export const getUserData = async (req: Request, res: Response) => {
 }
 
 export const updateUserData = async (req: Request, res: Response) => {
-  const user: string | JwtPayload | null | object = verifyUserByToken(req.body?.token)
+  const user = verifyUserByToken(req.body?.token)
   const newPasswordGenerated: any = encryptString(req.body?.password)
 
   const newUserData = {
@@ -90,10 +96,10 @@ export const updateUserData = async (req: Request, res: Response) => {
   if (user !== null) {
     try {
 
-      const userUpdated = await userModel
+      const userUpdated = await UserModel
         .updateOne({
           _id: user?._id || ''
-        }, {newUserData})
+        }, { newUserData })
 
       responseGenerator(res, {
         url: req.url,

@@ -3,5 +3,5 @@ export type UserType = {
   username: string,
   password: string,
   hasHiddenFriend?: boolean,
-  desires?: string
+  desires?: string | ''
 }

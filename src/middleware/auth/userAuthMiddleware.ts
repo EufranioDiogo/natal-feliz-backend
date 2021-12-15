@@ -2,14 +2,14 @@ import { Request, Response, NextFunction } from 'express'
 import { JwtPayload } from 'jsonwebtoken'
 import { responseGenerator } from '../../helpers/remote/response/responseGenerator'
 import { verifyUserByToken } from '../../helpers/security/jwt/jwtHelper'
-import { userModel } from '../../models/user/userModel'
+import { UserModel } from '../../models/user/userModel'
 
 export const isOwnerOfData = async (req: Request, res: Response, next: NextFunction) => {
-  const user: string | JwtPayload | null | object = verifyUserByToken(req.body?.token)
+  const user = verifyUserByToken(req.body?.token)
 
   if (user !== null) {
     try {
-      const userFounded = await userModel.findOne({ _id: user?._id || '' })
+      const userFounded = await UserModel.findOne({ _id: user?._id || '' })
 
 
       if (userFounded !== null) {

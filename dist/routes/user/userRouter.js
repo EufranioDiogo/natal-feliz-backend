@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userRouter = void 0;
+var userAuthMiddleware_1 = require("./../../middleware/auth/userAuthMiddleware");
+var userController_1 = require("./../../controllers/user/userController");
 var express_1 = require("express");
 var userRouter = (0, express_1.Router)();
 exports.userRouter = userRouter;
-userRouter.get('/', function () { });
-userRouter.post('/', function () { });
-userRouter.put('/', function () { });
+userRouter.get('/', userAuthMiddleware_1.isOwnerOfData, userController_1.getUserData);
+userRouter.post('/', userController_1.createUserController);
+userRouter.put('/', userAuthMiddleware_1.isOwnerOfData, userController_1.updateUserData);

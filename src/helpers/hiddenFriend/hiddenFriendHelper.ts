@@ -1,4 +1,5 @@
-import { userModel } from './../../models/user/userModel';
+import { UserType } from './../../utils/vars/user/userVars';
+import { UserModel } from './../../models/user/userModel';
 import { hiddenFriendModel } from "../../models/hiddenFriend/hiddenFriendModel"
 
 export const userHasHiddenFriendHelper = async (userid: string): Promise<boolean> => {
@@ -10,9 +11,9 @@ export const userHasHiddenFriendHelper = async (userid: string): Promise<boolean
   return false
 }
 
-export const getUserHiddenFriendHelper = async (userid: string): Promise<object | null> => {
+export const getUserHiddenFriendHelper = async (userid: string): Promise<UserType | null> => {
   const result = await hiddenFriendModel.findOne({ fromUser: userid })
-  const hiddenFriend = await userModel.findOne({ _id: result?.destinationUser })
+  const hiddenFriend = await UserModel.findOne({ _id: result?.destinationUser })
 
   if (result) {
     return hiddenFriend
@@ -29,11 +30,9 @@ export const registerHiddenFriendRelationShipHelper = async (userid: string, hid
   return true;
 }
 
-export const getUserHiddenFriendDesiresHelper = async (userid: string): Promise<object | null> => {
-  const hiddenFriend = await getUserHiddenFriendDesiresHelper(userid)
+export const getUserHiddenFriendDesiresHelper = async (userid: string): Promise<string> => {
+  const hiddenFriend = await getUserHiddenFriendHelper(userid)
+  const hiddeFriendDesires = String(hiddenFriend?.desires)
 
-  if (hiddenFriend !== null) {
-    return hiddenFriend?.desires
-  }
-  return null
+  return hiddenFriend?.desires === undefined ? '' : hiddeFriendDesires
 }

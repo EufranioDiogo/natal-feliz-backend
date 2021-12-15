@@ -24,24 +24,21 @@
   },
   "homepage": "https://github.com/EufranioDiogo/natal-feliz-backend#readme",
   "dependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "@types/express": "^4.17.13",
-    "@types/mongoose": "^5.11.97",
-    "@types/node": "^16.11.12",
     "babel": "^6.23.0",
     "bcryptjs": "^2.4.3",
-    "cloudinary": "^1.27.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "googleapis": "^87.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.1.1",
-    "multer": "^1.4.3"
+    "mongoose": "^6.0.6"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.6",
     "tslint": "^6.1.3",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.4",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.13",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^16.11.12"
   }
 }
