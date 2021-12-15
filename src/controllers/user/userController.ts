@@ -4,7 +4,6 @@ import { encryptString } from './../../helpers/security/encryption/encryptHelper
 import { responseGenerator } from './../../helpers/remote/response/responseGenerator';
 import { Request, Response } from 'express';
 import { userModel } from "../../models/user/userModel";
-import { UserType } from "../../utils/vars/user/userVars";
 import { JwtPayload } from 'jsonwebtoken';
 
 

@@ -1,6 +1,6 @@
 import { Schema, model, SchemaTypes } from 'mongoose';
 
-const userSchema = new Schema(
+const hiddenFriendSchema = new Schema(
   {
     fromUser: {
       type: SchemaTypes.ObjectId,
@@ -20,4 +20,4 @@ const userSchema = new Schema(
   }
 );
 
-export const userModel = model('user', userSchema)
+export const hiddenFriendModel = model('hiddenfriend', hiddenFriendSchema)
