@@ -1,14 +1,11 @@
-import { UserType } from '../../utils/vars/user/userVars';
-import { randomNumber } from '../../utils/functions/mathFunctions';
-import { verifyUserByToken } from '../security/jwt/jwtHelper';
-import { UserModel } from '../../models/user/userModel';
-import { UpdateWithAggregationPipeline } from 'mongoose';
-import { encryptString } from '../security/encryption/encryptHelper';
+const { randomNumber } = require('../../utils/functions/mathFunctions');
+const { verifyUserByToken } = require('../security/jwt/jwtHelper');
+const { UserModel } = require('../../models/user/userModel');
+const { UpdateWithAggregationPipeline } = require('mongoose');
+const { encryptString } = require('../security/encryption/encryptHelper');
 
 
-export const createUserHelper = async (user) => {
-  console.log('....--....1')
-
+const createUserHelper = async (user) => {
   const newPasswordGenerated = await encryptString(user.password)
 
   const newUser = new UserModel({
@@ -16,30 +13,22 @@ export const createUserHelper = async (user) => {
     password: newPasswordGenerated
   })
 
-  console.log(newUser)
-  console.log('....--....2')
-
-
-
-  const creationResult = await UserModel.create()
-    
-
-  console.log('....--....3')
+  await UserModel.create()
 
   return newUser;
 }
 
-export const getUserByTokenHelper = async (token) => {
+const getUserByTokenHelper = async (token) => {
   const user = verifyUserByToken(token)
 
   return await UserModel.findOne({ _id: user?._id })
 }
 
-export const getAllUsersHelper = async () => {
+const getAllUsersHelper = async () => {
   return await UserModel.find()
 }
 
-export const getRandomUserNotSelectedForHiddenFriendHelper = async () => {
+const getRandomUserNotSelectedForHiddenFriendHelper = async () => {
   const users = await UserModel.find({ hasHiddenFriend: false })
   const sortedIndex = randomNumber(0, users.length)
 
@@ -48,6 +37,8 @@ export const getRandomUserNotSelectedForHiddenFriendHelper = async () => {
   return users[sortedIndex]
 }
 
-export const getUserByIdHelper = async (userid) => {
+const getUserByIdHelper = async (userid) => {
   return await UserModel.findOne({ _id: userid })
 }
+
+module.exports = { createUserHelper, getUserByTokenHelper, getRandomUserNotSelectedForHiddenFriendHelper, getAllUsersHelper, getUserByIdHelper }

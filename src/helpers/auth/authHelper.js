@@ -1,4 +1,6 @@
-export const loginHelper = (username: string, password: string): boolean => {
+const loginHelper = (username, password) => {
 
   return false;
 }
+
+module.exports = { loginHelper }

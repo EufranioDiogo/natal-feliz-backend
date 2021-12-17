@@ -1,6 +1,4 @@
-import { responseBody } from '../../../utils/vars/remote/RemoteVars';
-
-export const responseGenerator = (res: Response, responseBody: responseBody) => {
+const responseGenerator = (res, responseBody) => {
   return {
     ...responseBody,
     metadata: {
@@ -8,3 +6,4 @@ export const responseGenerator = (res: Response, responseBody: responseBody) => 
     }
   }
 }
+module.exports = { responseGenerator }

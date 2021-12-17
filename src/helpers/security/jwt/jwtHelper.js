@@ -1,10 +1,9 @@
-import { UserType } from '../../../utils/vars/user/userVars';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
-export const generateJWT = (user) => {
+const generateJWT = (user) => {
   const accessToken = jwt.sign({
     _id: user._id,
     username: user.username,
@@ -18,12 +17,14 @@ export const generateJWT = (user) => {
   return accessToken;
 }
 
-export const verifyUserByToken = (accessToken) => {
+const verifyUserByToken = (accessToken) => {
   try {
-    const user = jwt.verify(accessToken, process.env.JWT_SECRET || '') as JwtPayload;
+    const user = jwt.verify(accessToken, process.env.JWT_SECRET || '')
 
     return user
   } catch (error) {
     return null
   }
 }
+
+module.exports = { generateJWT, verifyUserByToken }

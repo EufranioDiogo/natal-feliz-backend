@@ -1,18 +1,16 @@
-import { DB_PROD_URL, DB_DEV_URL } from './config/apiConfig';
-import express from 'express';
-import { authRouter } from './routes/auth/authRouter';
-import { friendRouter } from './routes/friendHidden/friendRouter'
-import { userRouter } from './routes/user/userRouter';
-import dotenv from 'dotenv';
-import { Mongoose } from 'mongoose';
-import { Console } from 'console';
-
+//import { DB_PROD_URL, DB_DEV_URL } from './config/apiConfig';
+const express = require('express');
+const { authRouter } = require('./routes/auth/authRouter');
+const { friendRouter } = require('./routes/friendHidden/friendRouter');
+const { userRouter } = require('./routes/user/userRouter');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 
 const app = express();
 const port = 3000 || process.env.PORT;
-const mongoose = new Mongoose();
 
 const cors = require("cors");
+const { DB_PROD_URL, DB_DEV_URL } = require('./config/apiConfig');
 const corsOptions = {
   origin: '*',
   credentials: true,            //access-control-allow-credentials:true
@@ -32,10 +30,12 @@ app.get('/', (req, res) => {
   res.send('The sedulous hyena ate the antelope!');
 });
 
+// https://data.mongodb-api.com/app/data-ftwnh/endpoint/data/beta
 
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
 app.use('/friend', friendRouter)
+
 
 console.log(DB_PROD_URL)
 

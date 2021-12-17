@@ -1,8 +1,8 @@
-import { responseGenerator } from '../../helpers/remote/response/responseGenerator'
-import { verifyUserByToken } from '../../helpers/security/jwt/jwtHelper'
-import { UserModel } from '../../models/user/userModel'
+const { responseGenerator } = require('../../helpers/remote/response/responseGenerator');
+const { verifyUserByToken } = require('../../helpers/security/jwt/jwtHelper');
+const { UserModel } = require('../../models/user/userModel');
 
-export const isOwnerOfData = async (req, res, next) => {
+const isOwnerOfData = async (req, res, next) => {
   const user = verifyUserByToken(req.body?.token)
 
   if (user !== null) {
@@ -46,3 +46,5 @@ export const isOwnerOfData = async (req, res, next) => {
     }
   }
 }
+
+module.exports = { isOwnerOfData }

@@ -1,8 +1,8 @@
-import { responseGenerator } from '../../../helpers/remote/response/responseGenerator';
-import { userHasHiddenFriendHelper, getUserHiddenFriendHelper, registerHiddenFriendRelationShipHelper, getUserHiddenFriendDesiresHelper } from '../../../helpers/hiddenFriend/hiddenFriendHelper';
-import { getUserByTokenHelper, getRandomUserNotSelectedForHiddenFriendHelper } from '../../../helpers/user/userHelper';
+const { responseGenerator } = require('../../../helpers/remote/response/responseGenerator');
+const { userHasHiddenFriendHelper, getUserHiddenFriendHelper, registerHiddenFriendRelationShipHelper, getUserHiddenFriendDesiresHelper } = require('../../../helpers/hiddenFriend/hiddenFriendHelper');
+const { getUserByTokenHelper, getRandomUserNotSelectedForHiddenFriendHelper } = require('../../../helpers/user/userHelper');
 
-export const getUserHiddenFriendController = async (req, res) => {
+const getUserHiddenFriendController = async (req, res) => {
   const user = await getUserByTokenHelper(req.body?.token)
 
   if (await userHasHiddenFriendHelper(user?._id)) {
@@ -27,7 +27,7 @@ export const getUserHiddenFriendController = async (req, res) => {
         }
       })
     }
-    
+
   } else {
     const hiddenFriend = await getRandomUserNotSelectedForHiddenFriendHelper()
     await registerHiddenFriendRelationShipHelper(user?._id, hiddenFriend._id)
@@ -43,9 +43,9 @@ export const getUserHiddenFriendController = async (req, res) => {
   }
 }
 
-export const getUserHiddenFriendDesiresController = async (req, res) => {
+const getUserHiddenFriendDesiresController = async (req, res) => {
   const user = await getUserByTokenHelper(req.body?.token)
-  
+
   const hiddenFriendDesires = await getUserHiddenFriendDesiresHelper(user?._id)
 
   responseGenerator(res, {
@@ -58,7 +58,7 @@ export const getUserHiddenFriendDesiresController = async (req, res) => {
   })
 }
 
-export const userHasHiddenFriendController = async (req, res) => {
+const userHasHiddenFriendController = async (req, res) => {
   const user = await getUserByTokenHelper(req.body?.token)
 
   const hasHiddenFriend = await userHasHiddenFriendHelper(user?._id)
@@ -72,3 +72,5 @@ export const userHasHiddenFriendController = async (req, res) => {
     }
   })
 }
+
+module.exports = { getUserHiddenFriendController, getUserHiddenFriendDesiresController, userHasHiddenFriendController }

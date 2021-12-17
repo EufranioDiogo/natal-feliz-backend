@@ -1,4 +1,4 @@
-import { Schema, model, SchemaTypes } from 'mongoose';
+const { Schema, model, SchemaTypes } = require('mongoose');
 
 const hiddenFriendSchema = new Schema(
   {
@@ -20,4 +20,6 @@ const hiddenFriendSchema = new Schema(
   }
 );
 
-export const hiddenFriendModel = model('hiddenfriend', hiddenFriendSchema)
+const hiddenFriendModel = model('hiddenfriend', hiddenFriendSchema)
+
+module.exports = { hiddenFriendModel }

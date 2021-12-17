@@ -1,5 +1,5 @@
-import { loginUserController, isAuthenticatedUserController, logoutUserController } from '../../controllers/auth/authController';
-import { Router } from "express";
+const { loginUserController, isAuthenticatedUserController, logoutUserController } = require('../../controllers/auth/authController');
+const { Router } = require("express");
 
 const authRouter = Router()
 
@@ -7,4 +7,4 @@ authRouter.get('/', isAuthenticatedUserController)
 authRouter.post('/login', loginUserController)
 authRouter.post('/logout', logoutUserController)
 
-export { authRouter }
+module.exports = { authRouter }

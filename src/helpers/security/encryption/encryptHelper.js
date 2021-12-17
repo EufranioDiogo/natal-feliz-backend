@@ -1,10 +1,12 @@
-import bcryptjs from 'bcryptjs'
+const bcryptjs = require('bcryptjs')
 
-export const encryptString = async (value) => {
-  const newValue = await bcryptjs.hash(value, 10) 
+const encryptString = async (value) => {
+  const newValue = await bcryptjs.hash(value, 10)
   return newValue
 }
 
-export const compareEncryptedStringToNormal = (encryptedString, normalString) => {
+const compareEncryptedStringToNormal = (encryptedString, normalString) => {
   return bcryptjs.compareSync(normalString, encryptedString)
 }
+
+module.exports = { encryptString, compareEncryptedStringToNormal }

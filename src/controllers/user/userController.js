@@ -1,26 +1,21 @@
-import { getUserByTokenHelper, createUserHelper } from '../../helpers/user/userHelper';
-import { UserType } from '../../utils/vars/user/userVars';
-import { generateJWT, verifyUserByToken } from '../../helpers/security/jwt/jwtHelper';
-import { encryptString } from '../../helpers/security/encryption/encryptHelper';
-import { responseGenerator } from '../../helpers/remote/response/responseGenerator';
-import { UserModel } from "../../models/user/userModel";
+const { getUserByTokenHelper, createUserHelper } = require('../../helpers/user/userHelper');
+const { generateJWT, verifyUserByToken } = require('../../helpers/security/jwt/jwtHelper');
+const { encryptString } = require('../../helpers/security/encryption/encryptHelper');
+const { responseGenerator } = require('../../helpers/remote/response/responseGenerator');
+const { UserModel } = require("../../models/user/userModel");
 
 
-export const createUserController = async (req, res) => {
-  const user: UserType = {
-    username: req.body?.username,
-    password: req.body?.password,
-  }
-
+const createUserController = async (req, res) => {
   try {
-    const newUser = new UserModel(user)
+    const user = {
+      username: req.body.username,
+      password: req.body.password
+    }
 
-    UserModel
-      .create(newUser)
-      .then(() => {
-        console.log('Creation ', newUser)
+    createUserHelper(user)
+      .then((data) => {
         const token = generateJWT({
-          _id: newUser?._id,
+          _id: data?._id,
           ...user
         })
 
@@ -30,24 +25,14 @@ export const createUserController = async (req, res) => {
             status: 200,
             result: true,
             data: {
-              ...newUser,
+              ...data,
               token
             }
           }))
       })
-      .catch((err: any) => {
+      .catch((err) => {
         console.log(err)
-        res.json(
-          responseGenerator(res, {
-            url: req.url,
-            status: 500,
-            result: false,
-            data: {
-              err
-            }
-          }))
       })
-
   } catch (error) {
     console.log(error)
     responseGenerator(res, {
@@ -60,7 +45,7 @@ export const createUserController = async (req, res) => {
   }
 }
 
-export const getUserData = async (req, res) => {
+const getUserData = async (req, res) => {
   const user = await getUserByTokenHelper(req.body?.token)
 
 
@@ -91,9 +76,9 @@ export const getUserData = async (req, res) => {
   }
 }
 
-export const updateUserData = async (req, res) => {
+const updateUserData = async (req, res) => {
   const user = verifyUserByToken(req.body?.token)
-  const newPasswordGenerated: any = encryptString(req.body?.password)
+  const newPasswordGenerated = encryptString(req.body?.password)
 
   const newUserData = {
     username: req.body?.username,
@@ -130,3 +115,5 @@ export const updateUserData = async (req, res) => {
     }
   }
 }
+
+module.exports = { createUserController, getUserData, updateUserData }

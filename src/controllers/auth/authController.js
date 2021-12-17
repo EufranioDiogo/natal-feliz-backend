@@ -1,9 +1,9 @@
-import { compareEncryptedStringToNormal } from '../../helpers/security/encryption/encryptHelper';
-import { verifyUserByToken, generateJWT } from '../../helpers/security/jwt/jwtHelper';
-import { responseGenerator } from '../../helpers/remote/response/responseGenerator';
-import { UserModel } from '../../models/user/userModel';
+const { generateJWT, verifyUserByToken } = require("../../../dist/helpers/security/jwt/jwtHelper");
+const { responseGenerator } = require("../../helpers/remote/response/responseGenerator");
+const { compareEncryptedStringToNormal } = require("../../helpers/security/encryption/encryptHelper");
+const { UserModel } = require("../../models/user/userModel");
 
-export const isAuthenticatedUserController = (req, res) => {
+const isAuthenticatedUserController = (req, res) => {
   const user = verifyUserByToken(req.body?.token)
 
   if (user !== null) {
@@ -27,7 +27,7 @@ export const isAuthenticatedUserController = (req, res) => {
   }
 }
 
-export const loginUserController = async (req, res) => {
+const loginUserController = async (req, res) => {
   const user = {
     username: req.body?.username,
     password: req.body?.password,
@@ -62,7 +62,7 @@ export const loginUserController = async (req, res) => {
   }
 }
 
-export const logoutUserController = (req, res) => {
+const logoutUserController = (req, res) => {
   responseGenerator(res, {
     url: req.url,
     status: 200,
@@ -72,3 +72,6 @@ export const logoutUserController = (req, res) => {
     }
   })
 }
+
+
+module.exports = { isAuthenticatedUserController, loginUserController, logoutUserController }

@@ -1,4 +1,4 @@
-import { Schema, model, SchemaTypes } from 'mongoose';
+const { Schema, model, SchemaTypes } = require('mongoose');
 
 const userSchema = new Schema(
   {
@@ -11,8 +11,9 @@ const userSchema = new Schema(
   }
 );
 
-export const UserModel = model('users', userSchema)
+const UserModel = model('users', userSchema)
 
+module.exports = { UserModel }
 /*
 
     hasHiddenFriend: {
