@@ -3,7 +3,7 @@ const { Router } = require("express");
 
 const friendHiddenRouter = Router()
 
-friendHiddenRouter.get('/hidden', getUserHiddenFriendController)
-friendHiddenRouter.get('/hidden/desires', getUserHiddenFriendDesiresController)
+friendHiddenRouter.get('/', getUserHiddenFriendController)
+friendHiddenRouter.get('/desires', getUserHiddenFriendDesiresController)
 
 module.exports = { friendHiddenRouter }

@@ -5,7 +5,6 @@ const { generateServerGoodResponseMessage, generateServerErrorMessage } = requir
 const { UserModel } = require("../../models/user/userModel");
 const { STATUS_CONTAINER } = require("../../utils/constants/remoteConstants");
 
-
 const createUserController = async (req, res) => {
   try {
     const user = {
@@ -24,7 +23,7 @@ const createUserController = async (req, res) => {
           .status(STATUS_CONTAINER.STATUS_CREATED)
           .json(
             generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_CREATED, {
-              data,
+              ...data,
               token
             })
           )
@@ -50,17 +49,18 @@ const createUserController = async (req, res) => {
 }
 
 const getUserData = async (req, res) => {
-  const user = await getUserByTokenHelper(req.body?.token)
+  const user = await verifyUserByToken(req.body?.token)
+
   if (user !== null) {
     try {
       const userFounded = await UserModel.findOne({ _id: user?._id })
 
-      if (userFounded !== {}) {
+      if (userFounded) {
         res
           .status(STATUS_CONTAINER.STATUS_SUCCES)
           .json(
             generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
-              ...userFounded
+              userFounded
             })
           )
       } else {
@@ -88,27 +88,26 @@ const getUserData = async (req, res) => {
 
 const updateUserData = async (req, res) => {
   const user = verifyUserByToken(req.body?.token)
-  const newPasswordGenerated = encryptString(req.body?.password)
+  const newPasswordGenerated = await encryptString(user?.password)
 
   const newUserData = {
     username: req.body?.username,
     password: newPasswordGenerated,
-    desires: req.body?.desires
+    desires: req.body?.desires || ''
   }
-
   if (user !== null) {
     try {
 
-      const userUpdated = await UserModel
+      await UserModel
         .updateOne({
           _id: user?._id
-        }, { newUserData })
+        }, newUserData)
 
       res
         .status(STATUS_CONTAINER.STATUS_SUCCES)
         .json(
           generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
-            ...userUpdated
+            ...newUserData
           })
         )
     } catch (error) {

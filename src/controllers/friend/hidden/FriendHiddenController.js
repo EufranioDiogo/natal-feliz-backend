@@ -1,6 +1,7 @@
-const { responseGenerator } = require('../../../helpers/remote/response/responseGenerator');
+const { responseGenerator, generateServerGoodResponseMessage } = require('../../../helpers/remote/response/responseGenerator');
 const { userHasHiddenFriendHelper, getUserHiddenFriendHelper, registerHiddenFriendRelationShipHelper, getUserHiddenFriendDesiresHelper } = require('../../../helpers/hiddenFriend/hiddenFriendHelper');
 const { getUserByTokenHelper, getRandomUserNotSelectedForHiddenFriendHelper } = require('../../../helpers/user/userHelper');
+const { STATUS_CONTAINER } = require('../../../utils/constants/remoteConstants');
 
 const getUserHiddenFriendController = async (req, res) => {
   const user = await getUserByTokenHelper(req.body?.token)
@@ -9,37 +10,34 @@ const getUserHiddenFriendController = async (req, res) => {
     const hiddenFriend = await getUserHiddenFriendHelper(user?._id)
 
     if (hiddenFriend !== null) {
-      responseGenerator(res, {
-        url: req.url,
-        status: 200,
-        result: true,
-        data: {
-          ...hiddenFriend
-        }
-      })
+      res
+        .status(STATUS_CONTAINER.STATUS_SUCCES)
+        .json(
+          generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+            hiddenFriend
+          })
+        )
     } else {
-      responseGenerator(res, {
-        url: req.url,
-        status: 200,
-        result: true,
-        data: {
-          message: 'Sem amigo oculto'
-        }
-      })
+      res
+        .status(STATUS_CONTAINER.STATUS_NO_CONTENT)
+        .json(
+          generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_NO_CONTENT, {
+          })
+        )
     }
 
   } else {
-    const hiddenFriend = await getRandomUserNotSelectedForHiddenFriendHelper()
+    console.log('ola')
+    const hiddenFriend = await getRandomUserNotSelectedForHiddenFriendHelper(user?._id)
     await registerHiddenFriendRelationShipHelper(user?._id, hiddenFriend._id)
 
-    responseGenerator(res, {
-      url: req.url,
-      status: 200,
-      result: true,
-      data: {
-        ...hiddenFriend
-      }
-    })
+    res
+      .status(STATUS_CONTAINER.STATUS_SUCCES)
+      .json(
+        generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+          hiddenFriend
+        })
+      )
   }
 }
 
@@ -48,14 +46,13 @@ const getUserHiddenFriendDesiresController = async (req, res) => {
 
   const hiddenFriendDesires = await getUserHiddenFriendDesiresHelper(user?._id)
 
-  responseGenerator(res, {
-    url: req.url,
-    status: 200,
-    result: true,
-    data: {
-      hiddenFriendDesires
-    }
-  })
+  res
+    .status(STATUS_CONTAINER.STATUS_SUCCES)
+    .json(
+      generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+        hiddenFriendDesires
+      })
+    )
 }
 
 const userHasHiddenFriendController = async (req, res) => {
@@ -63,14 +60,13 @@ const userHasHiddenFriendController = async (req, res) => {
 
   const hasHiddenFriend = await userHasHiddenFriendHelper(user?._id)
 
-  responseGenerator(res, {
-    url: req.url,
-    status: 200,
-    result: true,
-    data: {
-      hasHiddenFriend
-    }
-  })
+  res
+    .status(STATUS_CONTAINER.STATUS_SUCCES)
+    .json(
+      generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+        hasHiddenFriend
+      })
+    )
 }
 
 module.exports = { getUserHiddenFriendController, getUserHiddenFriendDesiresController, userHasHiddenFriendController }

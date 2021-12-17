@@ -20,12 +20,12 @@ const generateServerGoodResponseMessage = (status, data) => {
   }
 }
 
-const generateServerErrorMessage = (status) => {
+const generateServerErrorMessage = (status, message = 'An error occurred please try it later, or contact the coders of this API') => {
   return {
     status: status,
     result: false,
     data: {
-      message: 'An error occurred please try it later, or contact the coders of this API'
+      message 
     },
     metadata: {
       requestDate: new Date()

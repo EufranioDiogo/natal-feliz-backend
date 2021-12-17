@@ -8,7 +8,6 @@ const isOwnerOfData = async (req, res, next) => {
   const user = verifyUserByToken(req.body?.token)
 
   if (user !== null) {
-    console.log(user._id)
     try {
       next()
     } catch (error) {

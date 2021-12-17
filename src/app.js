@@ -38,6 +38,7 @@ app.use('/friend', friendRouter)
 
 console.log(process.env.PROD_DB_URL)
 
+
 mongoose.connect(process.env.PROD_DB_URL, () => {
   console.log("Database connected!")
 

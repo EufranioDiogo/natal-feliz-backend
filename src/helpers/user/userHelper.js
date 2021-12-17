@@ -8,31 +8,39 @@ const { encryptString } = require('../security/encryption/encryptHelper');
 const createUserHelper = async (user) => {
   const newPasswordGenerated = await encryptString(user.password)
 
-  const newUser = new UserModel({
+  const newUser = {
     ...user,
     password: newPasswordGenerated
-  })
+  }
 
-  await UserModel.create()
+  try {
+    const resultOfOperation = await UserModel.create(newUser)
 
-  return newUser;
+    return resultOfOperation
+  } catch (error) {
+    console.log(error)
+    throw new Error(error)
+  }
 }
 
 const getUserByTokenHelper = async (token) => {
   const user = verifyUserByToken(token)
 
-  return await UserModel.findOne({ _id: user?._id })
+  const userFounded = await UserModel.findOne({ _id: user?._id })
+
+  console.log(userFounded)
+  return userFounded
 }
 
 const getAllUsersHelper = async () => {
   return await UserModel.find()
 }
 
-const getRandomUserNotSelectedForHiddenFriendHelper = async () => {
-  const users = await UserModel.find({ hasHiddenFriend: false })
+const getRandomUserNotSelectedForHiddenFriendHelper = async (userid) => {
+  const users = await UserModel.find({ hasHiddenFriend: false, $not: { _id: userid } })
   const sortedIndex = randomNumber(0, users.length)
 
-  await UserModel.updateOne({ _id: users[sortedIndex]?._id }, [{ $set: { "hasHiddenFriend": true, modified: "$$NOW" } }])
+  await UserModel.updateOne({ _id: users[sortedIndex]?._id }, { $set: { "hasHiddenFriend": true } })
 
   return users[sortedIndex]
 }

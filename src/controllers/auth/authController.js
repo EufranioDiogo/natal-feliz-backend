@@ -1,29 +1,26 @@
 const { generateJWT, verifyUserByToken } = require("../../../dist/helpers/security/jwt/jwtHelper");
-const { responseGenerator } = require("../../helpers/remote/response/responseGenerator");
+const { responseGenerator, generateServerGoodResponseMessage, generateServerErrorMessage } = require("../../helpers/remote/response/responseGenerator");
 const { compareEncryptedStringToNormal } = require("../../helpers/security/encryption/encryptHelper");
 const { UserModel } = require("../../models/user/userModel");
+const { STATUS_CONTAINER } = require("../../utils/constants/remoteConstants");
 
 const isAuthenticatedUserController = (req, res) => {
   const user = verifyUserByToken(req.body?.token)
 
   if (user !== null) {
-    responseGenerator(res, {
-      url: req.url,
-      status: 200,
-      result: true,
-      data: {
-        message: 'User authenticated'
-      }
-    })
+    res
+      .status(STATUS_CONTAINER.STATUS_SUCCES)
+      .json(
+        generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+          message: 'User authenticated'
+        })
+      )
   } else {
-    responseGenerator(res, {
-      url: req.url,
-      status: 403,
-      result: false,
-      data: {
-        message: 'Not authenticated'
-      }
-    })
+    res
+      .status(STATUS_CONTAINER.STATUS_FORBIDDEN)
+      .json(
+        generateServerErrorMessage(STATUS_CONTAINER.STATUS_FORBIDDEN, 'User authenticated')
+      )
   }
 }
 
@@ -41,36 +38,34 @@ const loginUserController = async (req, res) => {
       ...user
     })
 
-    responseGenerator(res, {
-      url: req.url,
-      status: 200,
-      result: true,
-      data: {
-        ...userFounded,
-        token
-      }
-    })
+
+    res
+      .status(STATUS_CONTAINER.STATUS_SUCCES)
+      .json(
+        generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+          ...userFounded,
+          token
+        })
+      )
   } else {
-    responseGenerator(res, {
-      url: req.url,
-      status: 403,
-      result: false,
-      data: {
-        message: 'Erro, dados inválidos'
-      }
-    })
+    res
+      .status(STATUS_CONTAINER.STATUS_SUCCES)
+      .json(
+        generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+          message: 'Error with your authentication'
+        })
+      )
   }
 }
 
 const logoutUserController = (req, res) => {
-  responseGenerator(res, {
-    url: req.url,
-    status: 200,
-    result: true,
-    data: {
-      message: 'Logout user'
-    }
-  })
+  res
+    .status(STATUS_CONTAINER.STATUS_SUCCES)
+    .json(
+      generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+        message: 'Logout user'
+      })
+    )
 }
 
 
