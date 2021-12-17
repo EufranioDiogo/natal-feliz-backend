@@ -11,22 +11,22 @@ export const createUserHelper = async (user: UserType): Promise<any> => {
 
   const newPasswordGenerated: string = await encryptString(user.password)
 
-  const newUser = {
+  const newUser = new UserModel({
     ...user,
     password: newPasswordGenerated
-  }
+  })
+
+  console.log(newUser)
   console.log('....--....2')
 
 
 
-  const creationResult = await UserModel
-    .create(newUser)
-    .then()
-    .catch()
-  
+  const creationResult = await UserModel.create()
+    
+
   console.log('....--....3')
 
-  return creationResult;
+  return newUser;
 }
 
 export const getUserByTokenHelper = async (token: string) => {

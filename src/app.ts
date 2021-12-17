@@ -39,8 +39,9 @@ app.use('/friend', friendRouter)
 
 console.log(DB_PROD_URL)
 
-mongoose.connect(DB_DEV_URL, (error: any) => {
-  console.log(error)
+mongoose.connect(DB_PROD_URL, () => {
+  console.log("Database connected!")
+
   app.listen(port, () => {
     console.log('Servidor rodando 1')
   });

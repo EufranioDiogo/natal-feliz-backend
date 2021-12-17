@@ -1,18 +1,16 @@
-import { Schema, model, SchemaTypes } from 'mongoose';
-
-const userSchema = new Schema(
-  {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserModel = void 0;
+var mongoose_1 = require("mongoose");
+var userSchema = new mongoose_1.Schema({
     username: {
-      type: SchemaTypes.String,
+        type: mongoose_1.SchemaTypes.String,
     },
     password: {
-      type: SchemaTypes.String,
+        type: mongoose_1.SchemaTypes.String,
     }
-  }
-);
-
-export const UserModel = model('users', userSchema)
-
+});
+exports.UserModel = (0, mongoose_1.model)('users', userSchema);
 /*
 
     hasHiddenFriend: {
@@ -34,4 +32,4 @@ export const UserModel = model('users', userSchema)
       default: new Date().getDate(),
       required: true
     }
-*/
+*/ 

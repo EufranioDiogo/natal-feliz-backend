@@ -5,12 +5,12 @@ const hiddenFriendSchema = new Schema(
     fromUser: {
       type: SchemaTypes.ObjectId,
       required: true,
-      ref: 'user'
+      ref: 'users'
     },
     destinationUser: {
       type: SchemaTypes.ObjectId,
       required: true,
-      ref: 'user'
+      ref: 'users'
     },
     createdAt: {
       type: SchemaTypes.Date,

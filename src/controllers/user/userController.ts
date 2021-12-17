@@ -5,7 +5,6 @@ import { encryptString } from './../../helpers/security/encryption/encryptHelper
 import { responseGenerator } from './../../helpers/remote/response/responseGenerator';
 import { Request, Response } from 'express';
 import { UserModel } from "../../models/user/userModel";
-import { JwtPayload } from 'jsonwebtoken';
 
 
 export const createUserController = async (req: Request, res: Response) => {
@@ -14,13 +13,15 @@ export const createUserController = async (req: Request, res: Response) => {
     password: req.body?.password,
   }
 
-  console.log(user)
-
   try {
-    createUserHelper(user)
-      .then((creationResult: any) => {
+    const newUser = new UserModel(user)
+
+    UserModel
+      .create(newUser)
+      .then(() => {
+        console.log('Creation ', newUser)
         const token = generateJWT({
-          _id: creationResult?._id,
+          _id: newUser?._id,
           ...user
         })
 
@@ -30,15 +31,23 @@ export const createUserController = async (req: Request, res: Response) => {
             status: 200,
             result: true,
             data: {
-              ...creationResult,
+              ...newUser,
               token
             }
           }))
       })
-      .catch(err => {
+      .catch((err: any) => {
         console.log(err)
+        res.json(
+          responseGenerator(res, {
+            url: req.url,
+            status: 500,
+            result: false,
+            data: {
+              err
+            }
+          }))
       })
-
 
   } catch (error) {
     console.log(error)
