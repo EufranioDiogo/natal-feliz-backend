@@ -4,18 +4,13 @@ const userSchema = new Schema(
   {
     username: {
       type: SchemaTypes.String,
+      required: true,
+      unique: true
     },
     password: {
       type: SchemaTypes.String,
-    }
-  }
-);
-
-const UserModel = model('users', userSchema)
-
-module.exports = { UserModel }
-/*
-
+      required: true
+    },
     hasHiddenFriend: {
       type: SchemaTypes.Boolean,
       required: true,
@@ -35,4 +30,13 @@ module.exports = { UserModel }
       default: new Date().getDate(),
       required: true
     }
+  }
+);
+
+const UserModel = model('users', userSchema)
+
+module.exports = { UserModel }
+/*
+
+    
 */

@@ -2,8 +2,36 @@ const responseGenerator = (res, responseBody) => {
   return {
     ...responseBody,
     metadata: {
-      requestDate: new Date().getDate()
+      requestDate: new Date()
     }
   }
 }
-module.exports = { responseGenerator }
+
+const generateServerGoodResponseMessage = (status, data) => {
+  return {
+    status: status,
+    result: true,
+    data: {
+      ...data
+    },
+    metadata: {
+      requestDate: new Date()
+    }
+  }
+}
+
+const generateServerErrorMessage = (status) => {
+  return {
+    status: status,
+    result: false,
+    data: {
+      message: 'An error occurred please try it later, or contact the coders of this API'
+    },
+    metadata: {
+      requestDate: new Date()
+    }
+  }
+}
+
+
+module.exports = { responseGenerator, generateServerGoodResponseMessage, generateServerErrorMessage }

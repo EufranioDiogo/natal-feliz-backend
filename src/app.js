@@ -10,7 +10,6 @@ const app = express();
 const port = 3000 || process.env.PORT;
 
 const cors = require("cors");
-const { DB_PROD_URL, DB_DEV_URL } = require('./config/apiConfig');
 const corsOptions = {
   origin: '*',
   credentials: true,            //access-control-allow-credentials:true
@@ -37,9 +36,9 @@ app.use('/user', userRouter)
 app.use('/friend', friendRouter)
 
 
-console.log(DB_PROD_URL)
+console.log(process.env.PROD_DB_URL)
 
-mongoose.connect(DB_PROD_URL, () => {
+mongoose.connect(process.env.PROD_DB_URL, () => {
   console.log("Database connected!")
 
   app.listen(port, () => {

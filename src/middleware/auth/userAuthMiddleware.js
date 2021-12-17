@@ -1,48 +1,20 @@
-const { responseGenerator } = require('../../helpers/remote/response/responseGenerator');
+const { responseGenerator, generateServerErrorMessage } = require('../../helpers/remote/response/responseGenerator');
 const { verifyUserByToken } = require('../../helpers/security/jwt/jwtHelper');
 const { UserModel } = require('../../models/user/userModel');
+const { STATUS_CONTAINER } = require('../../utils/constants/remoteConstants');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const isOwnerOfData = async (req, res, next) => {
   const user = verifyUserByToken(req.body?.token)
 
   if (user !== null) {
+    console.log(user._id)
     try {
-      const userFounded = await UserModel.findOne({ _id: user?._id || '' })
-
-
-      if (userFounded !== null) {
-        if (userFounded?._id === user?._id) {
-          next()
-        } else {
-          responseGenerator(res, {
-            url: req.url,
-            status: 403,
-            result: false,
-            data: {
-              message: 'Operação inválida, sem permissões'
-            }
-          })
-        }
-      } else {
-        responseGenerator(res, {
-          url: req.url,
-          status: 403,
-          result: false,
-          data: {
-            message: 'Usuário não autenticado'
-          }
-        })
-      }
+      next()
     } catch (error) {
-      responseGenerator(res, {
-        url: req.url,
-        status: 500,
-        result: false,
-        data: {
-          message: 'Erro no servidor',
-          error: String(error)
-        }
-      })
+      res
+        .status(STATUS_CONTAINER.STATUS_INTERNAL_SERVER_ERROR)
+        .json(generateServerErrorMessage(STATUS_CONTAINER.STATUS_INTERNAL_SERVER_ERROR))
     }
   }
 }
