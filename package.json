@@ -1,0 +1,52 @@
+{
+  "name": "natal-back",
+  "version": "1.0.0",
+  "description": "natal feliz back",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "transpile": "babel ./src --out-dir dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EufranioDiogo/natal-feliz-backend.git"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "keywords": [
+    "node",
+    "express",
+    "mongodb",
+    "mongoose"
+  ],
+  "author": "EufranioDiogo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EufranioDiogo/natal-feliz-backend/issues"
+  },
+  "homepage": "https://github.com/EufranioDiogo/natal-feliz-backend#readme",
+  "dependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "babel": "^6.23.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.2",
+    "nodemon": "^2.0.15",
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.3",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1"
+  }
+}
