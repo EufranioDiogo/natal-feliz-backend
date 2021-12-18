@@ -31,8 +31,6 @@ app.get('/', (req, res) => {
   res.send('The sedulous hyena ate the antelope!');
 });
 
-// https://data.mongodb-api.com/app/data-ftwnh/endpoint/data/beta
-
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
 app.use('/friend', friendRouter)
