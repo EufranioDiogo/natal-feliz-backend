@@ -14,8 +14,7 @@ const { appRouter } = require('./src/routes/app/appRouter');
 const corsOptions = {
   origin: '*',
   credentials: true,            //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-  methods: "GET, PUT, POST"
+  optionSuccessStatus: 200
 }
 
 
