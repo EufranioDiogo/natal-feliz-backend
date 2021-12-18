@@ -1,8 +1,8 @@
 //import { DB_PROD_URL, DB_DEV_URL } from './config/apiConfig';
 const express = require('express');
-const { authRouter } = require('./routes/auth/authRouter');
-const { friendRouter } = require('./routes/friendHidden/friendRouter');
-const { userRouter } = require('./routes/user/userRouter');
+const { authRouter } = require('./src/routes/auth/authRouter');
+const { friendRouter } = require('./src/routes/friendHidden/friendRouter');
+const { userRouter } = require('./src/routes/user/userRouter');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
@@ -10,7 +10,7 @@ const app = express();
 const port = 3000 || process.env.PORT;
 
 const cors = require("cors");
-const { appRouter } = require('./routes/app/appRouter');
+const { appRouter } = require('./src/routes/app/appRouter');
 const corsOptions = {
   origin: '*',
   credentials: true,            //access-control-allow-credentials:true
