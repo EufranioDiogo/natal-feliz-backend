@@ -18,7 +18,6 @@ const createUserHelper = async (user) => {
 
     return resultOfOperation
   } catch (error) {
-    console.log(error)
     throw new Error(error)
   }
 }
@@ -28,7 +27,6 @@ const getUserByTokenHelper = async (token) => {
 
   const userFounded = await UserModel.findOne({ _id: user?._id })
 
-  console.log(userFounded)
   return userFounded
 }
 

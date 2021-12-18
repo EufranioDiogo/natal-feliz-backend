@@ -10,10 +10,12 @@ const app = express();
 const port = 3000 || process.env.PORT;
 
 const cors = require("cors");
+const { appRouter } = require('./routes/app/appRouter');
 const corsOptions = {
   origin: '*',
   credentials: true,            //access-control-allow-credentials:true
   optionSuccessStatus: 200,
+  methods: "GET, PUT, POST"
 }
 
 
@@ -34,10 +36,7 @@ app.get('/', (req, res) => {
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
 app.use('/friend', friendRouter)
-
-
-console.log(process.env.PROD_DB_URL)
-
+app.use('/app', appRouter)
 
 mongoose.connect(process.env.PROD_DB_URL, () => {
   console.log("Database connected!")

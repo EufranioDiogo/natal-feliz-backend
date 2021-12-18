@@ -49,12 +49,13 @@ const createUserController = async (req, res) => {
 }
 
 const getUserData = async (req, res) => {
-  const user = await verifyUserByToken(req.body?.token)
+  const user = await verifyUserByToken(req.header('Authorization'))
 
   if (user !== null) {
     try {
       const userFounded = await UserModel.findOne({ _id: user?._id })
 
+      console.log(userFounded)
       if (userFounded) {
         res
           .status(STATUS_CONTAINER.STATUS_SUCCES)
@@ -87,9 +88,11 @@ const getUserData = async (req, res) => {
 }
 
 const updateUserData = async (req, res) => {
-  const user = verifyUserByToken(req.body?.token)
-  const newPasswordGenerated = await encryptString(user?.password)
+  console.log(req.body)
 
+  const user = verifyUserByToken(req.header('Authorization'))
+  const newPasswordGenerated = await encryptString(user?.password)
+  console.log(req.body)
   const newUserData = {
     username: req.body?.username,
     password: newPasswordGenerated,

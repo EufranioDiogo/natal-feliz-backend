@@ -4,7 +4,7 @@ const { getUserByTokenHelper, getRandomUserNotSelectedForHiddenFriendHelper } = 
 const { STATUS_CONTAINER } = require('../../../utils/constants/remoteConstants');
 
 const getUserHiddenFriendController = async (req, res) => {
-  const user = await getUserByTokenHelper(req.body?.token)
+  const user = await getUserByTokenHelper(req.header('Authorization'))
 
   if (await userHasHiddenFriendHelper(user?._id)) {
     const hiddenFriend = await getUserHiddenFriendHelper(user?._id)
@@ -27,7 +27,6 @@ const getUserHiddenFriendController = async (req, res) => {
     }
 
   } else {
-    console.log('ola')
     const hiddenFriend = await getRandomUserNotSelectedForHiddenFriendHelper(user?._id)
     await registerHiddenFriendRelationShipHelper(user?._id, hiddenFriend._id)
 
@@ -42,7 +41,7 @@ const getUserHiddenFriendController = async (req, res) => {
 }
 
 const getUserHiddenFriendDesiresController = async (req, res) => {
-  const user = await getUserByTokenHelper(req.body?.token)
+  const user = await getUserByTokenHelper(req.header('Authorization'))
 
   const hiddenFriendDesires = await getUserHiddenFriendDesiresHelper(user?._id)
 
@@ -56,7 +55,7 @@ const getUserHiddenFriendDesiresController = async (req, res) => {
 }
 
 const userHasHiddenFriendController = async (req, res) => {
-  const user = await getUserByTokenHelper(req.body?.token)
+  const user = await getUserByTokenHelper(req.header('Authorization'))
 
   const hasHiddenFriend = await userHasHiddenFriendHelper(user?._id)
 

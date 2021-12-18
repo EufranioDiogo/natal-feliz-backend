@@ -4,15 +4,18 @@ const { compareEncryptedStringToNormal } = require("../../helpers/security/encry
 const { UserModel } = require("../../models/user/userModel");
 const { STATUS_CONTAINER } = require("../../utils/constants/remoteConstants");
 
-const isAuthenticatedUserController = (req, res) => {
-  const user = verifyUserByToken(req.body?.token)
+const isAuthenticatedUserController = async (req, res) => {
+  const user = verifyUserByToken(req.header('Authorization'))
 
   if (user !== null) {
+    const userFounded = await UserModel.findOne({ _id: user?._id })
+
     res
       .status(STATUS_CONTAINER.STATUS_SUCCES)
       .json(
         generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
-          message: 'User authenticated'
+          message: 'User authenticated',
+          userFounded
         })
       )
   } else {
@@ -27,12 +30,13 @@ const isAuthenticatedUserController = (req, res) => {
 const loginUserController = async (req, res) => {
   const user = {
     username: req.body?.username,
-    password: req.body?.password,
+    password: req.body?.password
   }
+
 
   const userFounded = await UserModel.findOne({ username: user.username })
 
-  if (compareEncryptedStringToNormal(userFounded?.password, user?.password)) {
+  if (await compareEncryptedStringToNormal(userFounded?.password, user?.password)) {
     const token = generateJWT({
       _id: userFounded?._id,
       ...user
@@ -43,7 +47,7 @@ const loginUserController = async (req, res) => {
       .status(STATUS_CONTAINER.STATUS_SUCCES)
       .json(
         generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
-          ...userFounded,
+          userFounded,
           token
         })
       )

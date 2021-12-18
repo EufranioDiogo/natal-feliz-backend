@@ -5,7 +5,7 @@ const { STATUS_CONTAINER } = require('../../utils/constants/remoteConstants');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const isOwnerOfData = async (req, res, next) => {
-  const user = verifyUserByToken(req.body?.token)
+  const user = verifyUserByToken(req.header('Authorization'))
 
   if (user !== null) {
     try {
