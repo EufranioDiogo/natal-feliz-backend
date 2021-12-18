@@ -55,7 +55,6 @@ const getUserData = async (req, res) => {
     try {
       const userFounded = await UserModel.findOne({ _id: user?._id })
 
-      console.log(userFounded)
       if (userFounded) {
         res
           .status(STATUS_CONTAINER.STATUS_SUCCES)
@@ -88,11 +87,9 @@ const getUserData = async (req, res) => {
 }
 
 const updateUserData = async (req, res) => {
-  console.log(req.body)
-
   const user = verifyUserByToken(req.header('Authorization'))
   const newPasswordGenerated = await encryptString(user?.password)
-  console.log(req.body)
+
   const newUserData = {
     username: req.body?.username,
     password: newPasswordGenerated,
