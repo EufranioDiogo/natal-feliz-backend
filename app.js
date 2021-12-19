@@ -11,16 +11,12 @@ const port = 3000 || process.env.PORT;
 
 const cors = require("cors");
 const { appRouter } = require('./src/routes/app/appRouter');
-const corsOptions = {
-  origin: '*',
-  credentials: true,            //access-control-allow-credentials:true
-  optionSuccessStatus: 200
-}
+
 
 
 dotenv.config()
 
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(express.json())
 
 
