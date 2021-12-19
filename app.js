@@ -1,4 +1,3 @@
-//import { DB_PROD_URL, DB_DEV_URL } from './config/apiConfig';
 const express = require('express');
 const { authRouter } = require('./src/routes/auth/authRouter');
 const { friendRouter } = require('./src/routes/friendHidden/friendRouter');
@@ -7,19 +6,16 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
 const app = express();
+const port = process.env.PORT || 3002;
+
 const cors = require("cors");
-
-
+const { appRouter } = require('./src/routes/app/appRouter');
 const corsOptions = {
   origin: '*',
   credentials: true,            //access-control-allow-credentials:true
   optionSuccessStatus: 200,
   methods: "GET, PUT, POST"
 }
-
-const port = process.env.PORT || 3002;
-
-const { appRouter } = require('./src/routes/app/appRouter');
 
 
 dotenv.config()
@@ -46,4 +42,3 @@ mongoose.connect(process.env.PROD_DB_URL, () => {
     console.log('Servidor rodando 1')
   });
 })
-
