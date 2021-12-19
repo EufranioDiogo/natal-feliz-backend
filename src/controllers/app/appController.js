@@ -1,6 +1,5 @@
-const { verifyUserByToken } = require("../../../dist/helpers/security/jwt/jwtHelper");
 const { generateServerGoodResponseMessage, generateServerErrorMessage } = require("../../helpers/remote/response/responseGenerator");
-
+const { verifyUserByToken } = require("../../helpers/security/jwt/jwtHelper");
 const { UserModel } = require("../../models/user/userModel");
 const { STATUS_CONTAINER } = require("../../utils/constants/remoteConstants");
 

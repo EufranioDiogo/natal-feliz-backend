@@ -1,6 +1,6 @@
-const { generateJWT, verifyUserByToken } = require("../../../dist/helpers/security/jwt/jwtHelper");
 const { responseGenerator, generateServerGoodResponseMessage, generateServerErrorMessage } = require("../../helpers/remote/response/responseGenerator");
 const { compareEncryptedStringToNormal } = require("../../helpers/security/encryption/encryptHelper");
+const { verifyUserByToken, generateJWT } = require("../../helpers/security/jwt/jwtHelper");
 const { UserModel } = require("../../models/user/userModel");
 const { STATUS_CONTAINER } = require("../../utils/constants/remoteConstants");
 
