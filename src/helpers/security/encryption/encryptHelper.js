@@ -5,8 +5,9 @@ const encryptString = async (value) => {
   return newValue
 }
 
-const compareEncryptedStringToNormal = (encryptedString, normalString) => {
-  return bcryptjs.compareSync(normalString, encryptedString)
+const compareEncryptedStringToNormal = async (encryptedString, normalString) => {
+  const result = await bcryptjs.compare(normalString, encryptedString)
+  return result
 }
 
 module.exports = { encryptString, compareEncryptedStringToNormal }

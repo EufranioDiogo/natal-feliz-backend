@@ -35,5 +35,22 @@ const getUserHiddenFriendDesiresHelper = async (userid) => {
 
   return hiddenFriend?.desires === undefined ? '' : hiddeFriendDesires
 }
+const getHiddenFriendListHelper = async () => {
+  const allHiddenFriendList = await hiddenFriendModel.find({})
+  let result = []
 
-module.exports = { userHasHiddenFriendHelper, getUserHiddenFriendHelper, registerHiddenFriendRelationShipHelper, getUserHiddenFriendDesiresHelper }
+  for (const element of allHiddenFriendList) {
+    const fromUser = await UserModel.findOne({ _id: element.fromUser })
+    const destinationUser = await UserModel.findOne({ _id: element.destinationUser })
+
+    result.push({
+      sender: fromUser.username,
+      reciver: destinationUser.username
+    })
+  }
+
+
+  return result;
+}
+
+module.exports = { userHasHiddenFriendHelper, getUserHiddenFriendHelper, registerHiddenFriendRelationShipHelper, getUserHiddenFriendDesiresHelper, getHiddenFriendListHelper }

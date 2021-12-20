@@ -36,26 +36,37 @@ const loginUserController = async (req, res) => {
 
   const userFounded = await UserModel.findOne({ username: user.username })
 
-  if (await compareEncryptedStringToNormal(userFounded?.password, user?.password)) {
-    const token = generateJWT({
-      _id: userFounded?._id,
-      ...user
-    })
+  if (userFounded !== null) {
+    const result = await compareEncryptedStringToNormal(userFounded?.password, user?.password)
+    if (result) {
+      const token = generateJWT({
+        _id: userFounded?._id,
+        ...user
+      })
 
 
-    res
-      .status(STATUS_CONTAINER.STATUS_SUCCES)
-      .json(
-        generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
-          userFounded,
-          token
-        })
-      )
+      res
+        .status(STATUS_CONTAINER.STATUS_SUCCES)
+        .json(
+          generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+            userFounded,
+            token
+          })
+        )
+    } else {
+      res
+        .status(STATUS_CONTAINER.STATUS_FORBIDDEN)
+        .json(
+          generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_FORBIDDEN, {
+            message: 'Error with your authentication'
+          })
+        )
+    }
   } else {
     res
-      .status(STATUS_CONTAINER.STATUS_SUCCES)
+      .status(STATUS_CONTAINER.STATUS_FORBIDDEN)
       .json(
-        generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+        generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_FORBIDDEN, {
           message: 'Error with your authentication'
         })
       )

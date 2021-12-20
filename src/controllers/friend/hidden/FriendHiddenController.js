@@ -1,5 +1,5 @@
 const { responseGenerator, generateServerGoodResponseMessage } = require('../../../helpers/remote/response/responseGenerator');
-const { userHasHiddenFriendHelper, getUserHiddenFriendHelper, registerHiddenFriendRelationShipHelper, getUserHiddenFriendDesiresHelper } = require('../../../helpers/hiddenFriend/hiddenFriendHelper');
+const { userHasHiddenFriendHelper, getUserHiddenFriendHelper, registerHiddenFriendRelationShipHelper, getUserHiddenFriendDesiresHelper, getHiddenFriendListHelper } = require('../../../helpers/hiddenFriend/hiddenFriendHelper');
 const { getUserByTokenHelper, getRandomUserNotSelectedForHiddenFriendHelper } = require('../../../helpers/user/userHelper');
 const { STATUS_CONTAINER } = require('../../../utils/constants/remoteConstants');
 
@@ -68,4 +68,16 @@ const userHasHiddenFriendController = async (req, res) => {
     )
 }
 
-module.exports = { getUserHiddenFriendController, getUserHiddenFriendDesiresController, userHasHiddenFriendController }
+const getHiddenFriendListController = async (req, res) => {
+  const hiddenFriendList = await getHiddenFriendListHelper()
+
+  res
+    .status(STATUS_CONTAINER.STATUS_SUCCES)
+    .json(
+      generateServerGoodResponseMessage(STATUS_CONTAINER.STATUS_SUCCES, {
+        hiddenFriendList
+      })
+    )
+}
+
+module.exports = { getUserHiddenFriendController, getUserHiddenFriendDesiresController, userHasHiddenFriendController, getHiddenFriendListController }
